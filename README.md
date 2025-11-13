@@ -1,128 +1,209 @@
-# SmartTask - Intelligent Task Management
+# 📋 SmartTask - Gestor Inteligente de Tareas
 
-AI-powered task management system that helps you prioritize and complete your tasks efficiently based on your energy levels and deadlines.
+**SmartTask** es un sistema de gestión de tareas inteligente, potenciado por IA, diseñado para ayudarte a priorizar y completar tus tareas de forma eficiente según tus niveles de energía y plazos de vencimiento.
 
-## Features
+## ✨ Características
 
-- Intelligent task prioritization using AI algorithms
-- Energy level tracking and recommendations
-- Daily AI-powered task recommendations
-- Task management with categories
-- Dark mode support
-- Responsive design
-- Real-time analytics and insights
+- 🤖 **Priorización inteligente de tareas** usando algoritmos de IA
+- ⚡ **Seguimiento de niveles de energía** con recomendaciones personalizadas
+- 💡 **Recomendaciones diarias impulsadas por IA** para optimizar tu productividad
+- 📂 **Gestión de tareas** con categorías y etiquetas personalizables
+- 🌙 **Modo oscuro** con tema personalizable
+- 📱 **Diseño responsivo** para escritorio, tablet y móvil
+- 📊 **Análisis e insights en tiempo real** sobre tu progreso
+- 📈 **Gráficos de energía semanal** para visualizar tu productividad
+- 🔐 **Autenticación segura** con validación de formularios
 
-## Tech Stack
+## 🛠️ Stack Tecnológico
 
-- **Framework**: Next.js 15+ (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **State Management**: Zustand
-- **Validation**: Zod
-- **UI Components**: Material UI + shadcn/ui
-- **Animations**: Framer Motion
-- **Charts**: Recharts
-- **Testing**: Jest + React Testing Library
+| Categoría | Tecnología | Versión |
+|-----------|-----------|---------|
+| **Framework** | Next.js (App Router) | 15.5.6+ |
+| **Lenguaje** | TypeScript | ^6 |
+| **Estilizado** | Tailwind CSS | ^4.1.9 |
+| **Gestión de Estado** | Zustand | latest |
+| **Validación** | Zod | 3.25.76 |
+| **Componentes UI** | shadcn/ui + Radix UI | latest |
+| **Animaciones** | Framer Motion | latest |
+| **Gráficos** | Recharts | latest |
+| **Testing** | Jest + React Testing Library | latest |
+| **Notificaciones** | Sonner | ^1.7.4 |
 
-## Getting Started
+## 🚀 Inicio Rápido
 
-### Prerequisites
+### Requisitos Previos
 
-- Node.js 20+
-- npm or yarn
+- **Node.js**: versión 20 o superior
+- **npm** como manejador de paquetes
+- Git para control de versiones
 
-### Installation
+### Instalación Local
 
-1. Clone the repository
-\`\`\`bash
-git clone <repository-url>
-cd smarttask-app
-\`\`\`
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/Marceloski1/smart-task.git
+   cd smart-task
+   ```
 
-2. Install dependencies
-\`\`\`bash
-npm install
-\`\`\`
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
 
-3. Run the development server
-\`\`\`bash
-npm run dev
-\`\`\`
+3. **Iniciar servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. **Abrir en tu navegador**
+   - Navega a [http://localhost:3000](http://localhost:3000)
 
-### Available Scripts
+### Scripts Disponibles
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm test` - Run tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:coverage` - Run tests with coverage
+```bash
+npm run dev              # Inicia servidor de desarrollo
+npm run build            # Compila para producción
+npm start                # Inicia servidor en modo producción
+npm run lint             # Ejecuta ESLint para validar código
+```
 
-## Deployment
+## 📁 Estructura del Proyecto
 
-### Cloudflare Pages
+```
+smart-task/
+├── app/
+│   ├── (auth)/                 # Rutas de autenticación (login/registro)
+│   ├── (dashboard)/            # Rutas protegidas del dashboard
+│   │   ├── dashboard/          # Vista principal del dashboard
+│   │   ├── tasks/              # Gestor de tareas
+│   │   ├── energy/             # Seguimiento de energía
+│   │   └── recommendations/    # IA recommendations
+│   ├── layout.tsx              # Layout raíz
+│   ├── page.tsx                # Página principal
+│   └── globals.css             # Estilos globales
+│
+├── components/
+│   ├── ui/                     # Componentes de UI reutilizables (shadcn)
+│   │   ├── button.tsx, card.tsx, dialog.tsx, etc.
+│   ├── auth/                   # Componentes de autenticación
+│   │   ├── login-form.tsx
+│   │   └── register-form.tsx
+│   ├── dashboard/              # Componentes del dashboard
+│   │   ├── stats-cards.tsx
+│   │   ├── energy-chart.tsx
+│   │   ├── priority-tasks.tsx
+│   │   └── ai-recommendation.tsx
+│   ├── tasks/                  # Componentes de tareas
+│   │   ├── task-card.tsx
+│   │   ├── task-dialog.tsx
+│   │   └── task-filters.tsx
+│   ├── energy/                 # Componentes de energía
+│   │   ├── energy-form.tsx
+│   │   ├── energy-history.tsx
+│   │   └── energy-weekly-chart.tsx
+│   ├── layout/                 # Componentes de layout
+│   │   ├── app-header.tsx
+│   │   ├── app-sidebar.tsx
+│   │   └── protected-layout.tsx
+│   └── theme-provider.tsx      # Proveedor de temas
+│
+├── lib/
+│   ├── types.ts                # Esquemas Zod y tipos TypeScript
+│   ├── store.ts                # Store global de Zustand
+│   ├── mock-data.ts            # Datos simulados para desarrollo
+│   ├── utils.ts                # Funciones auxiliares
+│   └── i18n.ts                 # Configuración i18n (internacionalización)
+│
+├── hooks/
+│   ├── use-mobile.ts           # Hook para detectar dispositivos móviles
+│   └── use-toast.ts            # Hook para notificaciones Toast
+│
+├── __tests__/                  # Tests unitarios e integración
+│   ├── components/
+│   ├── lib/
+│   └── README.md
+│
+├── public/                     # Archivos estáticos
+├── styles/                     # Estilos adicionales
+├── .github/workflows/          # GitHub Actions CI/CD
+│   ├── ci.yml                  # Pipeline de CI (lint, tests, build)
+│   └── deploy.yml              # Pipeline de despliegue a Cloudflare Pages
+│
+├── jest.config.js              # Configuración de Jest
+├── jest.setup.js               # Setup de Jest
+├── tsconfig.json               # Configuración de TypeScript
+├── tailwind.config.js          # Configuración de Tailwind CSS
+├── next.config.mjs             # Configuración de Next.js
+└── package.json                # Dependencias y scripts
+```
 
-This app is configured for deployment on Cloudflare Pages. The CI/CD pipeline is set up via GitHub Actions.
+## 🗄️ Datos de Prueba
 
-**Required Secrets:**
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
+La aplicación actualmente utiliza datos simulados locales almacenados en `lib/mock-data.ts`. La estructura de datos está diseñada para coincidir fácilmente con el esquema del backend planificado (PostgreSQL + Redis) para una integración futura sin cambios mayores. 
+.......Redis por definir
 
-### Vercel (Alternative)
+## 🔌 Integración Futura del Backend
 
-To deploy on Vercel instead:
+Este frontend está preparado para integrarse con un backend **FastAPI** usando:
 
-1. Install Vercel CLI
-\`\`\`bash
-npm i -g vercel
-\`\`\`
+- **PostgreSQL**: para almacenamiento de datos relacional (usuarios, tareas, energía, etc.)
+- **Redis**: para caché y gestión de sesiones ......Por definir
+- **API RESTful**: endpoints JSON para todas las operaciones
+- **Autenticación JWT**: para sesiones seguras
 
-2. Deploy
-\`\`\`bash
-vercel
-\`\`\`
+La estructura de datos en `lib/mock-data.ts` y `lib/types.ts` coincide con el esquema de base de datos planificado, facilitando la transición a backend real.
 
-Or connect your GitHub repository directly to Vercel for automatic deployments.
+## 🚀 Despliegue
 
-## Project Structure
+### Cloudflare Pages (Actual)
 
-\`\`\`
-smarttask-app/
-├── app/                    # Next.js app directory
-│   ├── (auth)/            # Authentication routes
-│   ├── (dashboard)/       # Dashboard routes
-│   ├── layout.tsx         # Root layout
-│   └── globals.css        # Global styles
-├── components/            # React components
-│   ├── ui/               # UI components (shadcn)
-│   ├── tasks/            # Task-related components
-│   ├── energy/           # Energy tracking components
-│   └── dashboard/        # Dashboard components
-├── lib/                   # Utility functions
-│   ├── types.ts          # Zod schemas & TypeScript types
-│   ├── store.ts          # Zustand store
-│   ├── mock-data.ts      # Mock data for development
-│   └── utils.ts          # Helper functions
-├── hooks/                 # Custom React hooks
-└── __tests__/            # Test files
-\`\`\`
+La aplicación está configurada para desplegarse en **Cloudflare Pages** con un pipeline CI/CD automático vía GitHub Actions.
 
-## Mock Data
+**Secretos Requeridos:**
+- `CLOUDFLARE_API_TOKEN` - Token de API de Cloudflare
+- `CLOUDFLARE_ACCOUNT_ID` - ID de cuenta de Cloudflare
 
-The app currently uses local mock data. The data structure is designed to match the planned PostgreSQL/Redis backend schema for easy future integration.
+**Workflow:**
+- Los cambios en `main` disparan automáticamente el despliegue
+- Los PRs a `main` y `develop` ejecutan linting y tests
 
-## Future Backend Integration
+### Vercel (Alternativa)
 
-This frontend is prepared for integration with a FastAPI backend using:
-- PostgreSQL for relational data
-- Redis for caching and session management
-- RESTful API endpoints
+Para desplegar en Vercel en lugar de Cloudflare:
 
-The mock data structure in `lib/mock-data.ts` matches the planned database schema.
+1. **Instalar Vercel CLI**
+   ```bash
+   npm i -g vercel
+   ```
 
-## License
+2. **Desplegar**
+   ```bash
+   vercel
+   ```
 
-MIT
+O conecta tu repositorio de GitHub directamente a Vercel para despliegues automáticos.
+
+## 🧪 Testing
+
+El proyecto incluye pruebas unitarias e integración configuradas con **Jest** y **React Testing Library**.
+
+```bash
+# Ejecutar todos los tests
+npm run test:coverage
+
+# Ejecutar tests en modo watch
+npm run test:watch
+```
+
+Los tests se encuentran en la carpeta `__tests__/` y se ejecutan automáticamente en el pipeline de CI.
+
+## 📝 Licencia
+
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo `LICENSE` para más detalles.
+
+## 📧 Contacto
+
+- **Autor**: Pokefurro
+- **GitHub**: [@Marceloski1](https://github.com/Marceloski1)
+
+---
