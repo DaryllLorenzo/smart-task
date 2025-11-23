@@ -9,10 +9,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { Task, TaskStatus, PriorityLevel } from "@/lib/types"
+import type { Task, TaskStatus, PriorityLevel, TaskCreate } from "@/lib/types"
 import { useStore } from "@/lib/store"
 import { format } from "date-fns"
 import { useTranslation, getTranslatedValue, useLanguage } from "@/lib/i18n"
+import {useTaskStore } from "./../../lib/store/for-service/task.store"
 
 interface TaskDialogProps {
   open: boolean
@@ -21,9 +22,10 @@ interface TaskDialogProps {
 }
 
 export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
-  const { addTask, updateTask, user, categories } = useStore()
+  const { user, categories } = useStore()
   const t = useTranslation()
   const language = useLanguage()
+  const {getTask , updateTask , createTask} = useTaskStore()
 
   const [formData, setFormData] = useState({
     title: "",
@@ -83,34 +85,23 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
 
     const { score, level } = calculatePriority()
 
-    const taskData = {
+    const taskData:TaskCreate = {
       title: formData.title.trim(),
       description: formData.description.trim() || undefined,
-      category_id: formData.category_id || null,
       urgency: formData.urgency,
       impact: formData.impact,
-      estimated_duration: formData.estimated_duration ? Number.parseInt(formData.estimated_duration) : undefined,
-      deadline: formData.deadline ? new Date(formData.deadline) : null,
+      estimated_duration: formData.estimated_duration ? Number.parseInt(formData.estimated_duration) : 0,
+      deadline: formData.deadline?.trim()
+  ? new Date(formData.deadline).toISOString()
+  : null , 
+      category_id: "211afeda-2f58-44f5-aa48-e29786ccd198" ,  //formData.category_id || null, for this case I use a defect value
       energy_required: formData.energy_required,
-      priority_score: score,
-      priority_level: level,
-      completion_probability: 0.8,
-      status: formData.status,
     }
 
     if (task) {
       updateTask(task.id, taskData)
     } else {
-      const newTask: Task = {
-        ...taskData,
-        id: crypto.randomUUID(),
-        user_id: user.id,
-        created_at: new Date(),
-        updated_at: new Date(),
-        completed_at: null,
-        actual_duration: undefined,
-      }
-      addTask(newTask)
+       createTask(taskData)
     }
 
     onClose()
@@ -118,19 +109,19 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto z-[100]">
         <DialogHeader>
           <DialogTitle>{task ? t.tasks.editTask : t.tasks.createTask}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title">{t.tasks.taskTitle} *</Label>
+              <Label htmlFor="title">{t.tasks.title} *</Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder={t.tasks.taskTitlePlaceholder}
+                placeholder={"Task title"}
                 required
               />
             </div>
@@ -141,7 +132,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder={t.tasks.descriptionPlaceholder}
+                placeholder={"Task description"}
                 rows={3}
               />
             </div>
@@ -154,7 +145,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
                   onValueChange={(value) => setFormData({ ...formData, category_id: value })}
                 >
                   <SelectTrigger id="category">
-                    <SelectValue placeholder={t.tasks.selectCategory} />
+                    <SelectValue placeholder={t.tasks.category} />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((cat) => (
@@ -242,13 +233,13 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="duration">{t.tasks.estimatedDuration}</Label>
+                <Label htmlFor="duration">{t.tasks.estimatedTime}</Label>
                 <Input
                   id="duration"
                   type="number"
                   value={formData.estimated_duration}
                   onChange={(e) => setFormData({ ...formData, estimated_duration: e.target.value })}
-                  placeholder={t.tasks.durationPlaceholder}
+                  placeholder={"Time in hours"}
                   min="1"
                 />
               </div>

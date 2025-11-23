@@ -2,25 +2,25 @@
 
 import type React from "react"
 
-import { useStore } from "@/lib/store"
+import { useAuthStore } from "@/lib/store/auth-store"
+import { useJwtStore } from "@/lib/store/for-service/jwt-store"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { AppHeader } from "./app-header"
 import { AppSidebar } from "./app-sidebar"
 
 export function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useStore()
+  //const { isAuthenticated } = useAuthStore()
+  const getAccessToken = useJwtStore((state) => state.getAccessToken)
+  const isAuthenticated = getAccessToken() ? true : false ; 
+  
   const router = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    /*if (!isAuthenticated) {
       router.push("/login")
-    }
+    }*/
   }, [isAuthenticated, router])
-
-  if (!isAuthenticated) {
-    return null
-  }
 
   return (
     <div className="flex min-h-screen flex-col">
