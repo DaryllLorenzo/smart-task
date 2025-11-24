@@ -109,7 +109,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto z-[100]">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{task ? t.tasks.editTask : t.tasks.createTask}</DialogTitle>
         </DialogHeader>

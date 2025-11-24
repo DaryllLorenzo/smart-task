@@ -19,6 +19,7 @@ export function AppSidebar() {
     { name: t.nav.tasks, href: "/tasks", icon: CheckSquare },
     { name: t.nav.energy, href: "/energy", icon: Battery },
     { name: t.nav.recommendations, href: "/recommendations", icon: Sparkles },
+    { name: t.nav.categories, href: "/categories", icon: Sparkles },
   ]
 
   return (

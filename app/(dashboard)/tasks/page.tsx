@@ -56,7 +56,7 @@ export default function TasksPage() {
        await fetchTasks() ; 
     } 
     fetch()
-  }, [tasks])
+  }, [])
 
   return (
     <ProtectedLayout>
