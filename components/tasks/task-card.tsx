@@ -9,6 +9,7 @@ import { format } from "date-fns"
 import { Clock, Edit, Trash2, CheckCircle2, PlayCircle } from "lucide-react"
 import { useStore } from "@/lib/store"
 import { useTranslation, getTranslatedValue, useLanguage } from "@/lib/i18n"
+import { TaskService } from "@/service/task.service"
 
 interface TaskCardProps {
   task: Task
@@ -58,7 +59,7 @@ export function TaskCard({ task, onEdit }: TaskCardProps) {
 
   const handleDelete = () => {
     if (confirm(t.tasks.deleteConfirm)) {
-      deleteTask(task.id)
+      TaskService.delete(task.id)
     }
   }
 
