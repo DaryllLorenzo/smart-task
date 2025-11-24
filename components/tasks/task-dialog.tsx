@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { Task, TaskStatus, PriorityLevel, TaskCreate } from "@/lib/types"
-import { useStore } from "@/lib/store"
+import { type Task, type TaskStatus, type PriorityLevel, type TaskCreate, Category } from "@/lib/types"
+import { fetchCategories } from "@/service/category.service"
 import { format } from "date-fns"
 import { useTranslation, getTranslatedValue, useLanguage } from "@/lib/i18n"
 import {useTaskStore } from "./../../lib/store/for-service/task.store"
@@ -22,10 +22,11 @@ interface TaskDialogProps {
 }
 
 export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
-  const { user, categories } = useStore()
+  //const { user, categories } = useStore()
   const t = useTranslation()
   const language = useLanguage()
   const {getTask , updateTask , createTask} = useTaskStore()
+  const [categories , setCategories] = useState<Category[]>([])
 
   const [formData, setFormData] = useState({
     title: "",
@@ -65,6 +66,11 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
         status: "pending",
       })
     }
+     const fetch = async () => {
+           const res = await fetchCategories()
+            setCategories(res)
+          }
+          fetch()
   }, [task, open])
 
   const calculatePriority = (): { score: number; level: PriorityLevel } => {
@@ -81,7 +87,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.title.trim() || !user) return
+    if (!formData.title.trim()) return
 
     const { score, level } = calculatePriority()
 
