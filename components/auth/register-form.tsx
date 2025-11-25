@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useTranslation } from "@/lib/i18n"
+import { useAuthStore } from "@/lib/store/for-service/auth.store" 
 
 export function RegisterForm() {
   const [name, setName] = useState("")
@@ -20,6 +21,7 @@ export function RegisterForm() {
   const [success, setSuccess] = useState(false)
   const t = useTranslation()
   const router = useRouter()
+  const { register } = useAuthStore() ;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,17 +44,12 @@ export function RegisterForm() {
     }
     
     try {
-      const user = await AuthService.register( { 
-        name:name, 
-        email:email, 
-        password:password 
-      })
+      
+    const user = await register(name , email , password) ;
+      
       setSuccess(true)
-
-      // Redirect to dashboard after success
-      setTimeout(() => {
-        router.push("/dashboard")
-      }, 1000)
+        router.push("/login")
+      
     } catch (err: any) {
       const message = err?.message || "Registration failed"
       setError(String(message))

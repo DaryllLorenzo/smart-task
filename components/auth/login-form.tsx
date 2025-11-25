@@ -16,8 +16,6 @@ export function LoginForm() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  //const login = useAuthStore((s) => s.login)
-  //const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   const t = useTranslation()
 
   const router = useRouter()

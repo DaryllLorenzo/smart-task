@@ -23,9 +23,26 @@ export const TaskService = {
   },
 
   update: async (taskId: string, taskData: Partial<Task>) => {
+    console.log(taskData)
     const res = await api.put(`/tasks/${taskId}`, taskData);
     return res.data;
   },
+
+  updateState:async (task_id: string, taskData: Partial<Task>) => {
+    const task = { 
+      title: taskData.title , 
+      description:taskData.description , 
+      urgency: taskData.urgency , 
+      impact: taskData.impact , 
+      estimated_duration:taskData.estimated_duration ,
+      deadline: taskData.deadline , 
+      category_id:taskData.category_id ,
+      energy_required:taskData.energy_required 
+    }
+    const res = await api.put(`/tasks/${task_id}`, task);
+    return res.data;
+  },
+
 
   delete: async (taskId: string) => {
     const res = await api.delete(`/tasks/${taskId}`);

@@ -13,6 +13,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   fetchUser: () => Promise<User | null>;
+  register:(name:string , email:string , password:string) => Promise<void>  
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -58,4 +59,26 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return null;
     }
   },
+   register: async (name:string , email:string , password:string) => { 
+    try{
+      console.log("This is the item")
+     await AuthService.register( { 
+          name:name, 
+          email:email, 
+          password:password 
+        })
+      const user = await get().fetchUser();
+      console.log("This is the user:")
+      console.log(user)
+       if (user) {
+        set({ user });
+      } 
+      }catch(err:any){
+      console.error(err);
+      set({ error: err.message || "Register failed" });
+      throw err;
+      }finally {
+      set({ loading: false });
+    }
+   } , 
 }));
