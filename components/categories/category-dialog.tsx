@@ -4,6 +4,7 @@ import { Category, CategoryCreate } from "@/lib/types"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
 import {updateCategory , createCategory} from "./../../service/category.service"
+import { useCategoryStore } from "@/lib/store/category-store"
 import { Label } from "@radix-ui/react-label"
 import { Textarea } from "../ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
@@ -18,6 +19,7 @@ interface CategoryDialogProps {
 
 export default function CategoryDialog({ open, onClose, category }: CategoryDialogProps) {
    
+  const {updateCategory , createCategory} = useCategoryStore() ; 
   const [formData, setFormData] = useState({
       name: "",
       description: "",
@@ -59,7 +61,7 @@ export default function CategoryDialog({ open, onClose, category }: CategoryDial
 
   return (
      <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto z-[100]">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto z-100">
         <DialogHeader>
           <DialogTitle>{category ? "Edit category" : "Create category"}</DialogTitle>
         </DialogHeader>

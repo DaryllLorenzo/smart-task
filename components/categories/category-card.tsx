@@ -1,9 +1,10 @@
 import { Category } from "@/lib/types"
-import {deleteCategory } from "./../../service/category.service"
+//import {deleteCategory } from "./../../service/category.service"
 import {motion} from "framer-motion"
 import { Card, CardContent } from "../ui/card"
 import { Button } from "../ui/button"
 import { Edit, Trash2 } from "lucide-react"
+import { useCategoryStore } from "@/lib/store/category-store"
 
 interface CategoryCardProps {
     category:Category , 
@@ -11,7 +12,7 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({category , onEdit}:CategoryCardProps) {
-  
+  const {deleteCategory} = useCategoryStore() ; 
 
   const handleDelete = async () => {
       if(confirm("Are you sure you want to delete this category?"))
