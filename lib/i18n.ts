@@ -33,6 +33,7 @@ export const translations = {
       settings: "Settings",
       profile: "Profile",
       logout: "Log out",
+      categories:"Categories"
     },
 
     // Auth
@@ -200,6 +201,23 @@ export const translations = {
       spanish: "Spanish",
       selectLanguage: "Select language",
     },
+
+      category : {
+      categoryTitleEdit: "Edit category",
+categoryTitleCreate: "Create category",
+inputLabelTitlePlaceholder: "Task title",
+inputLabelDescriptionPlaceholder: "Task description",
+buttonCancel: "Cancel",
+buttonSave: "Save",
+buttonCreate: "Create",
+srOnlyEditCategory: "Edit category",
+srOnlyDeleteCategory: "Delete category",
+pageTitle: "Categories",
+pageDescription: "Manage all your categories for clasify your tasks",
+emptyStateTitle: "You don´t have categories",
+
+  }
+   
   },
 
   es: {
@@ -229,7 +247,8 @@ export const translations = {
       recommendations: "Recomendaciones",
       settings: "Configuración",
       profile: "Perfil",
-      logout: "Cerrar sesión",
+      logout: "Cerrar sesión", 
+      categories:"Categorías"
     },
 
     // Auth
@@ -398,7 +417,24 @@ export const translations = {
       spanish: "Español",
       selectLanguage: "Seleccionar idioma",
     },
+  
+    //Categories
+    category : {
+categoryTitleEdit: "Editar categoría",
+categoryTitleCreate: "Crear categoría",
+inputLabelTitlePlaceholder: "Título de la tarea",
+inputLabelDescriptionPlaceholder: "Descripción de la tarea",
+buttonCancel: "Cancelar",
+buttonSave: "Guardar",
+buttonCreate: "Crear", 
+srOnlyEditCategory: "Editar categoría",
+srOnlyDeleteCategory: "Eliminar categoría",
+pageTitle: "Categorías",
+pageDescription: "Administra todas tus categorías para clasificar tus tareas",
+emptyStateTitle: "No tienes categorías",
+    }
   },
+
 }
 
 // This ensures filters work correctly when switching languages

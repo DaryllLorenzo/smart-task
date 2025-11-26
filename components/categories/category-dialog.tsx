@@ -10,6 +10,7 @@ import { Textarea } from "../ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
+import { useTranslation } from "@/lib/i18n"
 
 interface CategoryDialogProps {
   open: boolean
@@ -20,6 +21,7 @@ interface CategoryDialogProps {
 export default function CategoryDialog({ open, onClose, category }: CategoryDialogProps) {
    
   const {updateCategory , createCategory} = useCategoryStore() ; 
+  const t = useTranslation() ; 
   const [formData, setFormData] = useState({
       name: "",
       description: "",
@@ -63,7 +65,7 @@ export default function CategoryDialog({ open, onClose, category }: CategoryDial
      <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto z-100">
         <DialogHeader>
-          <DialogTitle>{category ? "Edit category" : "Create category"}</DialogTitle>
+          <DialogTitle>{category ? t.category.categoryTitleEdit : t.category.categoryTitleCreate}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
@@ -73,7 +75,7 @@ export default function CategoryDialog({ open, onClose, category }: CategoryDial
                 id="title"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder={"Task title"}
+                placeholder={t.category.inputLabelTitlePlaceholder}
                 required
               />
             </div>
@@ -84,7 +86,7 @@ export default function CategoryDialog({ open, onClose, category }: CategoryDial
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder={"Task description"}
+                placeholder={t.category.inputLabelDescriptionPlaceholder}
                 rows={3}
               />
             </div>
@@ -92,9 +94,9 @@ export default function CategoryDialog({ open, onClose, category }: CategoryDial
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
-              {"Cancelar"}
+              {t.category.buttonCancel}
             </Button>
-            <Button type="submit">{category ? "Save": "Create"}</Button>
+            <Button type="submit">{category ? t.category.buttonSave : t.category.buttonCreate}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

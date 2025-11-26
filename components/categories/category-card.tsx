@@ -5,6 +5,7 @@ import { Card, CardContent } from "../ui/card"
 import { Button } from "../ui/button"
 import { Edit, Trash2 } from "lucide-react"
 import { useCategoryStore } from "@/lib/store/category-store"
+import { useTranslation } from "@/lib/i18n"
 
 interface CategoryCardProps {
     category:Category , 
@@ -13,6 +14,7 @@ interface CategoryCardProps {
 
 export default function CategoryCard({category , onEdit}:CategoryCardProps) {
   const {deleteCategory} = useCategoryStore() ; 
+  const t = useTranslation() 
 
   const handleDelete = async () => {
       if(confirm("Are you sure you want to delete this category?"))
@@ -40,7 +42,7 @@ export default function CategoryCard({category , onEdit}:CategoryCardProps) {
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button variant="ghost" size="icon" onClick={() => onEdit(category)} className="h-8 w-8">
                   <Edit className="h-4 w-4" />
-                  <span className="sr-only">{"Edit category"}</span>
+                  <span className="sr-only">{t.category.srOnlyEditCategory}</span>
                 </Button>
                 <Button
                   variant="ghost"
@@ -49,7 +51,7 @@ export default function CategoryCard({category , onEdit}:CategoryCardProps) {
                   className="h-8 w-8 text-destructive hover:text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">{"Delete category"}</span>
+                  <span className="sr-only">{t.category.srOnlyDeleteCategory}</span>
                 </Button>
               </div>
             </div>
