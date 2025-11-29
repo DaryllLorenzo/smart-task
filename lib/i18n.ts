@@ -33,7 +33,8 @@ export const translations = {
       settings: "Settings",
       profile: "Profile",
       logout: "Log out",
-      categories:"Categories"
+      categories:"Categories" , 
+      summarizer:'Summarizer'
     },
 
     // Auth
@@ -215,7 +216,15 @@ srOnlyDeleteCategory: "Delete category",
 pageTitle: "Categories",
 pageDescription: "Manage all your categories for clasify your tasks",
 emptyStateTitle: "You don´t have categories",
+  } , 
 
+  summarizer : {
+  summarizer: "Summarizer",
+  placeholderSummarizer: "Enter the text you want to summarize...",
+  buttonLoading: "Summarizing...",
+  buttonSubmit: "Generate summary",
+  generatedSummary: "Generated summary",
+  keyPhrases: "Key phrases"
   }
    
   },
@@ -248,7 +257,8 @@ emptyStateTitle: "You don´t have categories",
       settings: "Configuración",
       profile: "Perfil",
       logout: "Cerrar sesión", 
-      categories:"Categorías"
+      categories:"Categorías" , 
+      summarizer:"Resumen"
     },
 
     // Auth
@@ -432,9 +442,16 @@ srOnlyDeleteCategory: "Eliminar categoría",
 pageTitle: "Categorías",
 pageDescription: "Administra todas tus categorías para clasificar tus tareas",
 emptyStateTitle: "No tienes categorías",
-    }
+    } , 
+ summarizer: {
+  summarizer: "Resumidor",
+  placeholderSummarizer: "Introduce el texto que deseas resumir...",
+  buttonLoading: "Resumiendo...",
+  buttonSubmit: "Generar resumen",
+  generatedSummary: "Resumen generado",
+  keyPhrases: "Palabras clave"
+  }
   },
-
 }
 
 // This ensures filters work correctly when switching languages
