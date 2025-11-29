@@ -5,7 +5,7 @@ import { useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, CheckSquare, Battery, Sparkles, X , Clipboard} from "lucide-react"
+import { LayoutDashboard, CheckSquare, Battery, Sparkles, X , Clipboard , InboxIcon} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "@/lib/i18n"
 
@@ -20,6 +20,7 @@ export function AppSidebar() {
     { name: t.nav.energy, href: "/energy", icon: Battery },
     { name: t.nav.recommendations, href: "/recommendations", icon: Sparkles },
     { name: t.nav.categories, href: "/categories", icon: Clipboard },
+    { name: t.nav.summarizer, href: "/summarizer" , icon: InboxIcon } , 
   ] as const
 
   return (

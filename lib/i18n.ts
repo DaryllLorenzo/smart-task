@@ -34,6 +34,8 @@ export const translations = {
       settings: "Settings",
       profile: "Profile",
       logout: "Log out",
+      categories:"Categories" , 
+      summarizer:'Summarizer'
     },
 
     // Auth
@@ -228,6 +230,31 @@ export const translations = {
       spanish: "Spanish",
       selectLanguage: "Select language",
     },
+
+      category : {
+      categoryTitleEdit: "Edit category",
+categoryTitleCreate: "Create category",
+inputLabelTitlePlaceholder: "Task title",
+inputLabelDescriptionPlaceholder: "Task description",
+buttonCancel: "Cancel",
+buttonSave: "Save",
+buttonCreate: "Create",
+srOnlyEditCategory: "Edit category",
+srOnlyDeleteCategory: "Delete category",
+pageTitle: "Categories",
+pageDescription: "Manage all your categories for clasify your tasks",
+emptyStateTitle: "You don´t have categories",
+  } , 
+
+  summarizer : {
+  summarizer: "Summarizer",
+  placeholderSummarizer: "Enter the text you want to summarize...",
+  buttonLoading: "Summarizing...",
+  buttonSubmit: "Generate summary",
+  generatedSummary: "Generated summary",
+  keyPhrases: "Key phrases"
+  }
+   
   },
 
   es: {
@@ -258,7 +285,9 @@ export const translations = {
       categories: "Categorías",
       settings: "Configuración",
       profile: "Perfil",
-      logout: "Cerrar sesión",
+      logout: "Cerrar sesión", 
+      categories:"Categorías" , 
+      summarizer:"Resumen"
     },
 
     // Auth
@@ -452,6 +481,30 @@ export const translations = {
       spanish: "Español",
       selectLanguage: "Seleccionar idioma",
     },
+  
+    //Categories
+    category : {
+categoryTitleEdit: "Editar categoría",
+categoryTitleCreate: "Crear categoría",
+inputLabelTitlePlaceholder: "Título de la tarea",
+inputLabelDescriptionPlaceholder: "Descripción de la tarea",
+buttonCancel: "Cancelar",
+buttonSave: "Guardar",
+buttonCreate: "Crear", 
+srOnlyEditCategory: "Editar categoría",
+srOnlyDeleteCategory: "Eliminar categoría",
+pageTitle: "Categorías",
+pageDescription: "Administra todas tus categorías para clasificar tus tareas",
+emptyStateTitle: "No tienes categorías",
+    } , 
+ summarizer: {
+  summarizer: "Resumidor",
+  placeholderSummarizer: "Introduce el texto que deseas resumir...",
+  buttonLoading: "Resumiendo...",
+  buttonSubmit: "Generar resumen",
+  generatedSummary: "Resumen generado",
+  keyPhrases: "Palabras clave"
+  }
   },
 }
 

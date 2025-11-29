@@ -103,7 +103,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
       priority_score: score,
       priority_level: level,
     }
-
+console.log(taskData)
     if (task) {
       const updateData: Partial<Task> = {
         ...baseData,
