@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 // ✅ Obtener recomendaciones con filtros opcionales
 export async function getRecommendations(params?: {

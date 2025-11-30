@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 // ✅ Obtener logs de energía con filtros
 export async function getEnergyLogs(params?: {

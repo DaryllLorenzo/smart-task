@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 // Process use case by uploading image and other data, receiving PDF response
 export async function processUseCase(formData: FormData) {

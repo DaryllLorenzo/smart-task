@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 export const AuthService = {
   register: async (data: { name: string; email: string; password: string; }) => {

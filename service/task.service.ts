@@ -1,7 +1,7 @@
 'use client'
 
 import { Task, TaskCreate, TaskStatus } from "@/lib/types";
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 export const TaskService = {
  fetchTasks: async (params = { skip: 0, limit: 100 }) => {

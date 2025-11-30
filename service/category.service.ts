@@ -1,5 +1,5 @@
 'use client'
-import api from "@/api/axios/axios-global";
+import api from "@/service/axios-global";
 
 export async function fetchCategories() {
   const res = await api.get("/categories/");
