@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+//export const runtime = 'edge';
 
 import axios from "axios";
 
