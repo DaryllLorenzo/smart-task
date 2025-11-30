@@ -1,32 +1,50 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { type Task, type TaskStatus, type PriorityLevel, type TaskCreate, Category } from "@/lib/types"
-import { fetchCategories } from "@/service/category.service"
-import { format } from "date-fns"
-import { useTranslation, getTranslatedValue, useLanguage } from "@/lib/i18n"
-import {useTaskStore } from "./../../lib/store/for-service/task.store"
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  type Task,
+  type TaskStatus,
+  type PriorityLevel,
+  type TaskCreate,
+  Category,
+} from "@/lib/types";
+import { fetchCategories } from "@/service/category.service";
+import { format } from "date-fns";
+import { useTranslation, getTranslatedValue, useLanguage } from "@/lib/i18n";
+import { useTaskStore } from "./../../lib/store/for-service/task.store";
 
 interface TaskDialogProps {
-  open: boolean
-  onClose: () => void
-  task?: Task | null
+  open: boolean;
+  onClose: () => void;
+  task?: Task | null;
 }
 
 export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
   //const { user, categories } = useStore()
-  const t = useTranslation()
-  const language = useLanguage()
-  const {getTask , updateTask , createTask} = useTaskStore()
-  const [categories , setCategories] = useState<Category[]>([])
+  const t = useTranslation();
+  const language = useLanguage();
+  const { getTask, updateTask, createTask } = useTaskStore();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -38,7 +56,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
     deadline: "",
     energy_required: "medium" as "low" | "medium" | "high",
     status: "pending" as TaskStatus,
-  })
+  });
 
   useEffect(() => {
     if (task) {
@@ -52,7 +70,7 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
         deadline: task.deadline ? format(task.deadline, "yyyy-MM-dd") : "",
         energy_required: task.energy_required || "medium",
         status: task.status,
-      })
+      });
     } else {
       setFormData({
         title: "",
@@ -64,60 +82,82 @@ export function TaskDialog({ open, onClose, task }: TaskDialogProps) {
         deadline: "",
         energy_required: "medium",
         status: "pending",
-      })
+      });
     }
-     const fetch = async () => {
-           const res = await fetchCategories()
-            setCategories(res)
-          }
-          fetch()
-  }, [task, open])
+    const fetch = async () => {
+      const res = await fetchCategories();
+      setCategories(res);
+    };
+    fetch();
+  }, [task, open]);
 
   const calculatePriority = (): { score: number; level: PriorityLevel } => {
-    const urgencyWeight = formData.urgency === "high" ? 40 : formData.urgency === "medium" ? 25 : 10
-    const impactWeight = formData.impact === "high" ? 40 : formData.impact === "medium" ? 25 : 10
-    const deadlineWeight = formData.deadline ? 20 : 0
+    const urgencyWeight =
+      formData.urgency === "high"
+        ? 40
+        : formData.urgency === "medium"
+        ? 25
+        : 10;
+    const impactWeight =
+      formData.impact === "high" ? 40 : formData.impact === "medium" ? 25 : 10;
+    const deadlineWeight = formData.deadline ? 20 : 0;
 
-    const score = urgencyWeight + impactWeight + deadlineWeight
-    const level: PriorityLevel = score >= 70 ? "high" : score >= 40 ? "medium" : "low"
+    const score = urgencyWeight + impactWeight + deadlineWeight;
+    const level: PriorityLevel =
+      score >= 70 ? "high" : score >= 40 ? "medium" : "low";
 
-    return { score, level }
-  }
+    return { score, level };
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!formData.title.trim()) return
+    if (!formData.title.trim()) return;
 
-    const { score, level } = calculatePriority()
+    const { score, level } = calculatePriority();
 
-    const taskData:TaskCreate = {
+    const baseData = {
       title: formData.title.trim(),
       description: formData.description.trim() || undefined,
       urgency: formData.urgency,
       impact: formData.impact,
-      estimated_duration: formData.estimated_duration ? Number.parseInt(formData.estimated_duration) : 0,
+      estimated_duration: formData.estimated_duration
+        ? Number.parseInt(formData.estimated_duration)
+        : 0,
       deadline: formData.deadline?.trim()
-  ? new Date(formData.deadline).toISOString()
-  : null , 
-      category_id: formData.category_id ,
+        ? new Date(formData.deadline).toISOString()
+        : null,
+      category_id: formData.category_id,
       energy_required: formData.energy_required,
-    }
-console.log(taskData)
+      priority_score: score,
+      priority_level: level,
+    };
+
     if (task) {
-      updateTask(task.id, taskData)
+      const updateData: Partial<Task> = {
+        ...baseData,
+        status: formData.status,
+      };
+      updateTask(task.id, updateData);
     } else {
-       createTask(taskData)
+      const taskData: TaskCreate = {
+        ...baseData,
+        deadline: baseData.deadline,
+        category_id: baseData.category_id,
+      };
+      createTask(taskData);
     }
 
-    onClose()
-  }
+    onClose();
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{task ? t.tasks.editTask : t.tasks.createTask}</DialogTitle>
+          <DialogTitle>
+            {task ? t.tasks.editTask : t.tasks.createTask}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
@@ -126,8 +166,10 @@ console.log(taskData)
               <Input
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder={"Task title"}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                placeholder={t.tasks.taskTitlePlaceholder}
                 required
               />
             </div>
@@ -137,8 +179,10 @@ console.log(taskData)
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder={"Task description"}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                placeholder={t.tasks.taskDescriptionPlaceholder}
                 rows={3}
               />
             </div>
@@ -148,7 +192,9 @@ console.log(taskData)
                 <Label htmlFor="category">{t.tasks.category}</Label>
                 <Select
                   value={formData.category_id}
-                  onValueChange={(value) => setFormData({ ...formData, category_id: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, category_id: value })
+                  }
                 >
                   <SelectTrigger id="category">
                     <SelectValue placeholder={t.tasks.category} />
@@ -167,16 +213,26 @@ console.log(taskData)
                 <Label htmlFor="status">{t.tasks.status}</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => setFormData({ ...formData, status: value as TaskStatus })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, status: value as TaskStatus })
+                  }
                 >
                   <SelectTrigger id="status">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pending">{getTranslatedValue("pending", language)}</SelectItem>
-                    <SelectItem value="in_progress">{getTranslatedValue("in_progress", language)}</SelectItem>
-                    <SelectItem value="completed">{getTranslatedValue("completed", language)}</SelectItem>
-                    <SelectItem value="postponed">{getTranslatedValue("postponed", language)}</SelectItem>
+                    <SelectItem value="pending">
+                      {getTranslatedValue("pending", language)}
+                    </SelectItem>
+                    <SelectItem value="in_progress">
+                      {getTranslatedValue("in_progress", language)}
+                    </SelectItem>
+                    <SelectItem value="completed">
+                      {getTranslatedValue("completed", language)}
+                    </SelectItem>
+                    <SelectItem value="postponed">
+                      {getTranslatedValue("postponed", language)}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -187,15 +243,26 @@ console.log(taskData)
                 <Label htmlFor="urgency">{t.tasks.urgency}</Label>
                 <Select
                   value={formData.urgency}
-                  onValueChange={(value) => setFormData({ ...formData, urgency: value as "low" | "medium" | "high" })}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      urgency: value as "low" | "medium" | "high",
+                    })
+                  }
                 >
                   <SelectTrigger id="urgency">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">{getTranslatedValue("low", language)}</SelectItem>
-                    <SelectItem value="medium">{getTranslatedValue("medium", language)}</SelectItem>
-                    <SelectItem value="high">{getTranslatedValue("high", language)}</SelectItem>
+                    <SelectItem value="low">
+                      {getTranslatedValue("low", language)}
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      {getTranslatedValue("medium", language)}
+                    </SelectItem>
+                    <SelectItem value="high">
+                      {getTranslatedValue("high", language)}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -204,15 +271,26 @@ console.log(taskData)
                 <Label htmlFor="impact">{t.tasks.impact}</Label>
                 <Select
                   value={formData.impact}
-                  onValueChange={(value) => setFormData({ ...formData, impact: value as "low" | "medium" | "high" })}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      impact: value as "low" | "medium" | "high",
+                    })
+                  }
                 >
                   <SelectTrigger id="impact">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">{getTranslatedValue("low", language)}</SelectItem>
-                    <SelectItem value="medium">{getTranslatedValue("medium", language)}</SelectItem>
-                    <SelectItem value="high">{getTranslatedValue("high", language)}</SelectItem>
+                    <SelectItem value="low">
+                      {getTranslatedValue("low", language)}
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      {getTranslatedValue("medium", language)}
+                    </SelectItem>
+                    <SelectItem value="high">
+                      {getTranslatedValue("high", language)}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -222,16 +300,25 @@ console.log(taskData)
                 <Select
                   value={formData.energy_required}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, energy_required: value as "low" | "medium" | "high" })
+                    setFormData({
+                      ...formData,
+                      energy_required: value as "low" | "medium" | "high",
+                    })
                   }
                 >
                   <SelectTrigger id="energy">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">{getTranslatedValue("low", language)}</SelectItem>
-                    <SelectItem value="medium">{getTranslatedValue("medium", language)}</SelectItem>
-                    <SelectItem value="high">{getTranslatedValue("high", language)}</SelectItem>
+                    <SelectItem value="low">
+                      {getTranslatedValue("low", language)}
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      {getTranslatedValue("medium", language)}
+                    </SelectItem>
+                    <SelectItem value="high">
+                      {getTranslatedValue("high", language)}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -244,8 +331,13 @@ console.log(taskData)
                   id="duration"
                   type="number"
                   value={formData.estimated_duration}
-                  onChange={(e) => setFormData({ ...formData, estimated_duration: e.target.value })}
-                  placeholder={"Time in hours"}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      estimated_duration: e.target.value,
+                    })
+                  }
+                  placeholder={t.tasks.timeInHoursPlaceholder}
                   min="1"
                 />
               </div>
@@ -256,14 +348,20 @@ console.log(taskData)
                   id="deadline"
                   type="date"
                   value={formData.deadline}
-                  onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, deadline: e.target.value })
+                  }
                 />
               </div>
             </div>
 
             <div className="rounded-lg bg-muted p-3 text-sm">
-              <p className="font-medium text-foreground">{t.tasks.aiPriorityCalculation}</p>
-              <p className="mt-1 text-muted-foreground leading-relaxed">{t.tasks.aiPriorityDesc}</p>
+              <p className="font-medium text-foreground">
+                {t.tasks.aiPriorityCalculation}
+              </p>
+              <p className="mt-1 text-muted-foreground leading-relaxed">
+                {t.tasks.aiPriorityDesc}
+              </p>
             </div>
           </div>
 
@@ -271,10 +369,12 @@ console.log(taskData)
             <Button type="button" variant="outline" onClick={onClose}>
               {t.common.cancel}
             </Button>
-            <Button type="submit">{task ? t.common.save : t.common.create}</Button>
+            <Button type="submit">
+              {task ? t.common.save : t.common.create}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
