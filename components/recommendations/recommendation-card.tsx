@@ -31,7 +31,7 @@ export function RecommendationCard({
   loading = false,
 }: RecommendationCardProps) {
   const confidencePercentage = Math.round(
-    recommendation.confidence_score * 100
+    recommendation.confidence_score //Get data *100 by defect
   );
 
   const {recommendations: t} = useTranslation()
