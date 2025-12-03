@@ -1,6 +1,7 @@
 'use client' 
 
 import axios from "axios";
+import { Numerals } from "react-day-picker";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL_SUMMARIZER,
@@ -24,6 +25,20 @@ export const SummarizerService = {
       }
 
       const response = await api.post("summarize", data) ;  
+      
+      return response
+    } , 
+
+    summarizeN: async (info:string[] , n_sentences:number) => {
+      
+      const data = {
+        texts:info , 
+        n_sentences: n_sentences,
+        //language: "auto",
+        //include_metrics: true , 
+      }
+
+      const response = await api.post("summarize/batch", data) ;  
       
       return response
     }

@@ -8,14 +8,14 @@ import { Label } from "@radix-ui/react-label"
 import { useTranslation } from "@/lib/i18n"
 
 export default function SummarizerForm() {
-  const { getSummarize, responseSummarizer, loading, error, key_phrases = [] } = useSummarizerStore()
+  const { getSummarizeN, responseSummarizer, loading, error, key_phrases = [] } = useSummarizerStore()
   const [request, setRequest] = useState("")
   const t = useTranslation() ; 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!request) return
-    await getSummarize(request)
+    await getSummarizeN(request)
   }
 
   return (
@@ -64,16 +64,18 @@ export default function SummarizerForm() {
           {key_phrases.length > 0 && (
             <div className="p-6 border border-blue-200 rounded-2xl shadow-sm">
               <h3 className="text-blue-800 font-bold text-lg mb-3">{t.summarizer.keyPhrases}</h3>
-              <div className="flex flex-wrap gap-2">
-                {key_phrases.map((kp, idx) => (
-                  <span
-                    key={idx}
-                    className=" text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                  >
-                    {kp}
-                  </span>
-                ))}
-              </div>
+         <div className="flex flex-wrap gap-2">
+  {key_phrases.map((group, groupIndex) =>
+    group.map((phrase, phraseIndex) => (
+      <span
+        key={`${groupIndex}-${phraseIndex}`}
+        className="text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+      >
+        {phrase}
+      </span>
+    ))
+  )}
+</div>
             </div>
           )}
         </div>

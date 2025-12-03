@@ -8,7 +8,7 @@ interface SummarizerState {
   loading: boolean;
   error: string | null;
 
-  getSummarize: (request: string) => Promise<void>;
+  getSummarizeN: (request: string) => Promise<void>;
 }
 
 export const useSummarizerStore = create<SummarizerState>((set) => ({
@@ -19,24 +19,30 @@ export const useSummarizerStore = create<SummarizerState>((set) => ({
   key_phrases:[] , 
 
 
-  getSummarize: async (request) => {
+  getSummarizeN: async (request) => {
     set({ loading: true, error: null });
 
     try {
-      // Llamada al endpoint real de tu API
-      const data = {
-        text: request,
-        n_sentences: 3,
-        language: "auto",
-        include_metrics: true,
-      };
+       // Contar saltos de línea con texto
+  const paragraphsNumber = request
+  .split(/\n+/)                // separa por uno o más saltos de línea
+  .map(line => line.trim())    // quitar espacios en cada línea
+  .filter(line => line !== "") // eliminar líneas vacías
+  .length;                     // cantidad final (número)
 
-      const response = await SummarizerService.summarize(request); 
+  const paragraphs = request
+        .split(/\n+/)                // separa por uno o varios saltos de línea
+        .map(line => line.trim())    // limpia espacios
+        .filter(line => line !== ""); // descarta líneas vacías
 
+      const response = await SummarizerService.summarizeN(paragraphs , paragraphsNumber ); 
+
+      console.log(response)
       // Extraemos el resumen real
-      const summarize = response?.data?.summary || "";
-      const key_phrases = response?.data?.key_phrases || [] ; 
-      set({ request, responseSummarizer: summarize , key_phrases:key_phrases });
+      const summaries = response?.data?.summaries
+      const summarizes = summaries.map((s) => s.summary)
+      const key_phrases = summaries.map((s) => s.key_phrases) // response?.data?.key_phrases || [] ; 
+      set({ request, responseSummarizer: summarizes , key_phrases:key_phrases });
       
     } catch (error: any) {
       console.error(error);
